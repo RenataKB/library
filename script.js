@@ -1,30 +1,8 @@
 const myLibrary = [
-  {
-    title: "The Hobbit",
-    author: "J.R.R. Tolkien",
-    pages: 310,
-    haveRead: true
-  },
-  {
-    title: "The Silmarillion",
-    author: "J.R.R. Tolkien",
-    pages: 468,
-    haveRead: false
-  },
-  {
-    title: "Harry Potter and the Goblet of Fire",
-    author: "J.K. Rowling",
-    pages: 636,
-    haveRead: true
-  }
-  ,
-  {
-    title: "A Game of Thrones",
-    author: "George R.R. Martin",
-    pages: 694,
-    haveRead: true
-  }
-
+  new Book("The Hobbit", "J.R.R. Tolkien", 310, true),
+  new Book("The Silmarillion", "J.R.R. Tolkien", 468, false),
+  new Book("Harry Potter and the Goblet of Fire", "J.K. Rowling", 636, true),
+  new Book("A Game of Thrones", "George R.R. Martin", 694, true)
 ];
 
 function Book(title, author, pages, haveRead) {
@@ -38,6 +16,9 @@ function Book(title, author, pages, haveRead) {
 const mainSection = document.querySelector('main');
 
 function showLibrary() {
+  // since I'm not using a unique id for the books, clean before start everytime
+  mainSection.replaceChildren();
+
   myLibrary.forEach(book => {
     const bookCard = document.createElement('section');
     for (const key in book) {
@@ -52,3 +33,33 @@ function showLibrary() {
 }
 
 showLibrary();
+
+const bookDialog = document.getElementById("book-info");
+
+const newBookButton = document.getElementById("new-book");
+newBookButton.addEventListener("click", () => bookDialog.showModal());
+
+const cancelButton = document.getElementById("cancel");
+cancelButton.addEventListener("click", () => bookDialog.close());
+
+let newBook;
+
+const addBookButton = document.getElementById("add-book");
+addBookButton.addEventListener("click", () => {
+  const bookTitle = document.getElementById('book-title').value;
+  const bookAuthor = document.getElementById('book-author').value;
+  const bookPages = document.getElementById('book-pages').value;
+  const bookRead = document.getElementById('read').checked;
+
+  newBook = new Book(bookTitle, bookAuthor, bookPages, bookRead);
+
+  addBookToLibrary();
+});
+
+function addBookToLibrary() {
+  if (newBook.title && newBook.author) {
+    myLibrary.push(newBook);
+    showLibrary();
+  }
+  newBook = null;
+}
