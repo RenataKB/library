@@ -15,21 +15,41 @@ function Book(title, author, pages, haveRead) {
 
 const mainSection = document.querySelector('main');
 
+function createBookCard(book) {
+  const bookCard = document.createElement('section');
+  const bookInfoDiv = displayBookInfo(book);
+  bookCard.appendChild(bookInfoDiv);
+  const removeBookBtn = createRemoveButton(book);
+  bookCard.appendChild(removeBookBtn);
+  mainSection.appendChild(bookCard);
+}
+
+function displayBookInfo(book) {
+  const bookInfoDiv = document.createElement('div');
+  for (const key in book) {
+    if (Object.hasOwnProperty.call(book, key)) {
+      const bookInfo = document.createElement('p');
+      bookInfo.textContent = book[key];
+      bookInfoDiv.appendChild(bookInfo);
+    }
+  }
+  return bookInfoDiv;
+}
+
+function createRemoveButton(book) {
+  const removeBookBtn = document.createElement('button');
+  const bookId = myLibrary.indexOf(book);
+  removeBookBtn.setAttribute("id", bookId);
+  removeBookBtn.setAttribute("class", "remove-book");
+  removeBookBtn.textContent = `Remove from library`;
+  removeBookBtn.addEventListener("click", () => removeBookFromLibrary(bookId));
+  return removeBookBtn;
+}
+
 function showLibrary() {
   // since I'm not using a unique id for the books, clean before start everytime
   mainSection.replaceChildren();
-
-  myLibrary.forEach(book => {
-    const bookCard = document.createElement('section');
-    for (const key in book) {
-      if (Object.hasOwnProperty.call(book, key)) {
-        const bookInfo = document.createElement('p');
-        bookInfo.textContent = book[key];
-        bookCard.appendChild(bookInfo);   
-      }
-    }
-    mainSection.appendChild(bookCard);
-  });
+  myLibrary.forEach(book => createBookCard(book));
 }
 
 showLibrary();
@@ -55,6 +75,11 @@ addBookButton.addEventListener("click", () => {
 
   addBookToLibrary();
 });
+
+function removeBookFromLibrary(bookId) {
+  myLibrary.splice(bookId, 1);
+  showLibrary();
+}
 
 function addBookToLibrary() {
   if (newBook.title && newBook.author) {
