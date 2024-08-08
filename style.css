@@ -48,12 +48,102 @@ table {
 }
 
 /* --------------------- */
-main {
-  display: flex;
+:root {
+  --primary-bg-color: #e5e5e5;
+  --secondary-bg-color: #fbbf24;
+	--primary-font-color: #023e8a;
+  --secondary-font-color: white;
+  --accent-color: #d62828;
 }
 
-section, fieldset {
-  border: 2px solid black;
+main {
+  display: grid;
+  justify-content: center;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 0.3fr));
+}
+
+dialog {
+	color: var(--primary-font-color);
+	border-radius: 18px;
+}
+
+fieldset {
   margin: 12px;
   padding: 6px;
+	font-size: 1.2rem;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+fieldset.read-status {
+	flex-direction: row;
+	justify-content: center;
+}
+
+legend {
+	font-weight: bold;
+}
+
+body {
+	font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+	color: var(--primary-font-color);
+}
+
+header {
+	text-align: center;
+	margin: 24px 48px;
+}
+
+h1 {
+	font-size: 2rem;
+	margin-bottom: 1rem;
+	font-weight: bold;
+}
+
+button {
+  border: none;
+  border-radius: 18px;
+  background-color: var(--accent-color);
+  color: var(--secondary-font-color);
+  padding: 6px 18px;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+.book-card {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+  border-radius: 18px;
+	margin: 12px;
+  padding: 18px;
+	background-color: var(--primary-bg-color);
+}
+
+.book-card.haveRead-false {
+	background-color: var(--secondary-bg-color);
+}
+
+.book-info {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	text-align: center;
+}
+
+.book-info:hover {
+	cursor: pointer;
+}
+
+.title {
+	font-size: 1.5rem;
+	font-weight: bold;
+}
+
+.author, .pages, .haveRead {
+	font-size: 1.2rem;
 }

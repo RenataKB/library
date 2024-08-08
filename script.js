@@ -17,29 +17,38 @@ const mainSection = document.querySelector("main");
 
 function createBookCard(book) {
   const bookCard = document.createElement("section");
-  bookCard.setAttribute("class", "book-card");
-  const bookInfoDiv = displayBookInfo(book);
-  bookCard.appendChild(bookInfoDiv);
+  bookCard.setAttribute("class", `book-card haveRead-${book.haveRead}`);
+  const bookInfo = displayBookInfo(book);
+  bookCard.appendChild(bookInfo);
   const removeBookBtn = createRemoveButton(book);
   bookCard.appendChild(removeBookBtn);
   mainSection.appendChild(bookCard);
 }
 
 function displayBookInfo(book) {
-  const bookInfoDiv = document.createElement("div");
-  bookInfoDiv.setAttribute("class", "book-info");
+  const bookInfo = document.createElement("div");
+  bookInfo.setAttribute("class", "book-info");
+  bookInfo.addEventListener("click", () => {
+    book.haveRead = !book.haveRead;
+    showLibrary();
+  })
   for (const key in book) {
-    const bookInfo = document.createElement("p");
-    bookInfo.setAttribute("class", key);
-    bookInfo.textContent = book[key];
-    if (key == "haveRead") {
-      bookInfo.textContent = book.haveRead ? "Read" : "Not read";
-      const readBookBtn = changeReadStatusButton(book);
-      bookInfo.appendChild(readBookBtn);
+    const bookElement = document.createElement("div");
+    bookElement.setAttribute("class", key);
+    switch (key) {
+      case "haveRead":
+        bookElement.textContent = book.haveRead ? "Read" : "Not read";
+        break;
+      case "pages":
+        bookElement.textContent = `${book.pages} pages`;
+        break;
+      default:
+        bookElement.textContent = book[key];
+        break;
     }
-    bookInfoDiv.appendChild(bookInfo);
+    bookInfo.appendChild(bookElement);
   }
-  return bookInfoDiv;
+  return bookInfo;
 }
 
 function createRemoveButton(book) {
@@ -50,17 +59,6 @@ function createRemoveButton(book) {
   removeBookBtn.textContent = "Remove from library";
   removeBookBtn.addEventListener("click", () => removeBookFromLibrary(bookId));
   return removeBookBtn;
-}
-
-function changeReadStatusButton(book) {
-  const readBookBtn = document.createElement("button");
-  readBookBtn.setAttribute("class", "change-read-status");
-  readBookBtn.textContent = book.haveRead ? "mark as not read" : "mark as read";
-  readBookBtn.addEventListener("click", () => {
-    book.haveRead = !book.haveRead;
-    showLibrary();
-  })
-  return readBookBtn;
 }
 
 function showLibrary() {
